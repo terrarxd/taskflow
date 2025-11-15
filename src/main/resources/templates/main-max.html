@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация...</title>
+    <script src="https://st.max.ru/js/max-web-app.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            if (!window.WebApp) {
+                window.location.href = "https://max.vestroia.space/cardboards";
+                return;
+            }
+            const tg = window.WebApp;
+            tg.ready();
+
+            const initData = tg.initData;
+
+            if (!initData) {
+                window.location.href = "/";
+                return;
+            }
+            try {
+                const response = await fetch("/api/auth/max", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        initData: initData
+                    }),
+                });
+                if (response.ok) {
+                    window.location.href = "/cardboards";
+                } else {
+                    window.location.href = "/";
+                }
+            } catch (epre) {
+                window.location.href = "/";
+            }
+        });
+    </script>
+</head>
+<body style="background:#121212; color:#fff; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; font-family:sans-serif;">
+<div>Авторизация через MAX...</div>
+</body>
+</html>
